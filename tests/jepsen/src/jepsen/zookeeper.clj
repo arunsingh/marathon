@@ -11,6 +11,7 @@
 
 (def zookeeper-conf    "/etc/zookeeper/conf/zoo.cfg")
 (def zookeeper-myid    "/var/lib/zookeeper/myid")
+(def zookeeper-log     "/var/log/zookeeper/zookeeper.log")
 
 (defn zk-url
   [test]
@@ -72,4 +73,7 @@
     (teardown! [_ test node]
       (info node "tearing down zookeeper..")
       (stop-zookeeper! test node)
-      (uninstall! test node version))))
+      (uninstall! test node version))
+    db/LogFiles
+    (log-files [_ test node]
+      [zookeeper-log])))
