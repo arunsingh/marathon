@@ -16,6 +16,7 @@
 (def mesos-master-config  "/etc/mesos-master")
 (def mesos-agent-config   "/etc/mesos-slave")
 (def mesos-zookeeper      "/etc/mesos/zk")
+(def mesos-log-dir        "/var/log/mesos")
 
 (defn calculate_quorum
   [test]
@@ -102,4 +103,7 @@
       (info node "tearing down mesos cluster..")
       (stop-agent! node)
       (stop-master! node)
-      (uninstall! test node version))))
+      (uninstall! test node version))
+    db/LogFiles
+    (log-files [_ test node]
+      (cu/ls-full mesos-log-dir))))
